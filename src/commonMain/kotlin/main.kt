@@ -38,26 +38,28 @@ suspend fun main() = Korge(width = 500, height = 650, bgcolor = Colors["#2b2b2b"
 	} */
 
 	fun pointsOnCircle(points:MutableList<Int>,r:Int, center:Pair<Int,Int>) {
-		val num = points.size
+		val num = points.size-2
 		val angle = 270.0/num * PI/180
 		val rotacion = PI/2
 		graphics {
 			fill(Colors["#b181ce"]) {
-				for (i in 1..num) {
+				circle(4.0).center().position(center.first-10,center.second+100)
+				circle(4.0).center().position(center.first+10,center.second+100)
+				text("${points.removeFirst()}").position(center.first-10,center.second+100)
+				text("${points.removeFirst()}").position(center.first+10,center.second+100)
+				for (i in num.downTo(1)) {
 					if (i%2!=0) {
-						circle(2.0).center().position(center.first+r*cos(angle*i/2 - rotacion),center.second+r*sin(angle*i/2 - rotacion))
-						text("${points.removeLast()}").position(center.first+r*cos(angle*i/2 - rotacion),center.second+r*sin(angle*i/2 - rotacion))
+						circle(2.0).center().position(center.first+r*-cos(angle*i/2 - rotacion),center.second+r*sin(angle*i/2 - rotacion))
+						text("${points.removeLast()}").position(center.first+r*-cos(angle*i/2 - rotacion),center.second+r*sin(angle*i/2 - rotacion))
 					} else {
-						circle(2.0).center().position(center.first+r*cos(-angle*(i-1)/2 - rotacion),center.second+r*sin(-angle*(i-1)/2 - rotacion))
-						text("${points.removeFirst()}").position(center.first+r*cos(-angle*(i-1)/2 - rotacion),center.second+r*sin(-angle*(i-1)/2 - rotacion))
+						circle(2.0).center().position(center.first+r*-cos(-angle*(i-1)/2 - rotacion),center.second+r*sin(-angle*(i-1)/2 - rotacion))
+						text("${points.removeFirst()}").position(center.first+r*-cos(-angle*(i-1)/2 - rotacion),center.second+r*sin(-angle*(i-1)/2 - rotacion))
 					}
 				}
 			}
 		}
 	}
 
-	pointsOnCircle((1..8).toList() as MutableList<Int>,100, Pair(250,325))
-	circle(7.5).center().position(260,425)
-	circle(7.5).center().position(240,425)
+	pointsOnCircle((1..20).toList() as MutableList<Int>,100, Pair(250,325))
 
 }
