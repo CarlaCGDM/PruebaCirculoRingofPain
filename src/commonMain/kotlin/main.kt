@@ -1,23 +1,9 @@
-import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.blockingSleep
-import com.soywiz.klock.seconds
-import com.soywiz.klogger.AnsiEscape
 import com.soywiz.korge.*
-import com.soywiz.korge.animate.waitStop
-import com.soywiz.korge.time.delay
-import com.soywiz.korge.tween.*
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
-import com.soywiz.korim.format.*
-import com.soywiz.korio.file.std.*
-import com.soywiz.korma.geom.Angle
-import com.soywiz.korma.geom.degrees
-import com.soywiz.korma.geom.sin
-import com.soywiz.korma.geom.vector.roundRect
-import com.soywiz.korma.interpolation.Easing
-import kotlinx.coroutines.awaitAll
 import kotlin.math.PI
 import kotlin.math.cos
+import kotlin.math.log
 import kotlin.math.sin
 
 suspend fun main() = Korge(width = 500, height = 650, bgcolor = Colors["#2b2b2b"]) {
@@ -39,27 +25,32 @@ suspend fun main() = Korge(width = 500, height = 650, bgcolor = Colors["#2b2b2b"
 
 	fun pointsOnCircle(points:MutableList<Int>,r:Int, center:Pair<Int,Int>) {
 		val num = points.size-2
-		val angle = 270.0/num * PI/180
+		val angle = 315.0/num * PI/180
 		val rotacion = PI/2
+		val perspectiva = 4
 		graphics {
 			fill(Colors["#b181ce"]) {
-				circle(4.0).center().position(center.first-10,center.second+100)
-				circle(4.0).center().position(center.first+10,center.second+100)
-				text("${points.removeFirst()}").position(center.first-10,center.second+100)
-				text("${points.removeFirst()}").position(center.first+10,center.second+100)
+				circle(log(20.0*points.size,5.0)).center().position(center.first-r/7,center.second+r/perspectiva)
+				circle(log(20.0*points.size,5.0)).center().position(center.first+r/7,center.second+r/perspectiva)
+				text("${points.removeFirst()}").position(center.first-r/7,center.second+r/perspectiva)
+				text("${points.removeFirst()}").position(center.first+r/7,center.second+r/perspectiva)
 				for (i in num.downTo(1)) {
 					if (i%2!=0) {
-						circle(2.0).center().position(center.first+r*-cos(angle*i/2 - rotacion),center.second+r*sin(angle*i/2 - rotacion))
-						text("${points.removeLast()}").position(center.first+r*-cos(angle*i/2 - rotacion),center.second+r*sin(angle*i/2 - rotacion))
+						var posx = center.first+r*-cos(angle*i/2-rotacion)
+						var posy = center.second+r*sin(angle*i/2 - rotacion)/perspectiva
+						circle(log(20.0*i, 5.0)).center().position(posx,posy)
+						text(points.removeLast().toString()).position(posx,posy)
 					} else {
-						circle(2.0).center().position(center.first+r*-cos(-angle*(i-1)/2 - rotacion),center.second+r*sin(-angle*(i-1)/2 - rotacion))
-						text("${points.removeFirst()}").position(center.first+r*-cos(-angle*(i-1)/2 - rotacion),center.second+r*sin(-angle*(i-1)/2 - rotacion))
+						var posx = center.first+r*-cos(-angle*(i-1)/2 - rotacion)
+						var posy = center.second+r*sin(-angle*(i-1)/2 - rotacion)/perspectiva
+						circle(log(20.0*i, 5.0)).center().position(posx,posy)
+						text(points.removeFirst().toString()).position(posx,posy)
 					}
 				}
 			}
 		}
 	}
 
-	pointsOnCircle((1..20).toList() as MutableList<Int>,100, Pair(250,325))
+	pointsOnCircle((1..40).toList() as MutableList<Int>,200, Pair(250,325))
 
 }
