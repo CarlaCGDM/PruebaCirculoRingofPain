@@ -26,7 +26,7 @@ suspend fun main() = Korge(width = 500, height = 650, bgcolor = Colors["#2b2b2b"
 	fun pointsOnCircle(points:MutableList<Int>,r:Int, center:Pair<Int,Int>) {
 		val num = points.size-2
 		val angle = 315.0/num * PI/180
-		val rotacion = PI/2
+		val rotacion = if (num%2 == 0) PI/2 else PI/2 + angle/2
 		val perspectiva = 4
 		graphics {
 			fill(Colors["#b181ce"]) {
@@ -51,6 +51,6 @@ suspend fun main() = Korge(width = 500, height = 650, bgcolor = Colors["#2b2b2b"
 		}
 	}
 
-	pointsOnCircle((1..40).toList() as MutableList<Int>,200, Pair(250,325))
+	pointsOnCircle((1..15).toList() as MutableList<Int>,200, Pair(250,325))
 
 }
