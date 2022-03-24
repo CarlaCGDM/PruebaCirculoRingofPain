@@ -18,6 +18,7 @@ apply<KorgeGradlePlugin>()
 
 korge {
 	id = "com.example.example"
+	name = "2048"
 	this.orientation = Orientation.PORTRAIT
 // To enable all targets at once
 
