@@ -137,7 +137,7 @@ suspend fun main() = Korge(
 		val r = views.virtualWidth / 3.5
 		val angle = 315 / cards.size * PI / 180
 		val rot = if (cards.size % 2 == 0) PI / 2 else PI / 2 + angle / 2
-		val persp = 4
+		val persp = 3
 		val center = Pair(views.virtualWidth / 2, views.virtualHeight / 2)
 		graphics {
 			roundRect(90.0, 130.0, 2.0,2.0,fill=Colors["#ce4357"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(center.first - r / 3, center.second + r / persp)
@@ -176,7 +176,7 @@ suspend fun main() = Korge(
 
 
 	//pointsOnCircle((1..15).toList() as MutableList<Int>,200, Pair(250,325))
-	var cartas = (1..5).toMutableList()
+	var cartas = (1..15).toMutableList()
 	cartas = rotarCartasLeft(cartas)
 	println(cartas)
 
