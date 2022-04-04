@@ -70,11 +70,11 @@ de su valor al radio.
 **X e Y**: Las coordenadas de la posición exacta donde debemos colocar esa carta nos vienen dadas por el seno y el coseno del ángulo que le corresponde, como puede verse
 en el siguiente diagrama. Multiplicamos estos valores por el radio y los desplazamos al centro de la pantalla sumándoles los valores correspondientes.
 
- <img src="https://i.imgur.com/2AvSwEA.gif" width="35%" height="35%"/>
+ <img src="https://i.imgur.com/2AvSwEA.gif" width="50%" height="50%"/>
 
 **Resultado**: 
 
-<img src="https://user-images.githubusercontent.com/92323990/161440601-fb6dba9b-0280-41dc-8b12-74080194df48.png" width="35%" height="35%"/>
+<img src="https://user-images.githubusercontent.com/92323990/161440601-fb6dba9b-0280-41dc-8b12-74080194df48.png" width="50%" height="50%"/>
 
 
 
