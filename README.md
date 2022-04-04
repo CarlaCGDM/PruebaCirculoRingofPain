@@ -74,7 +74,7 @@ en el siguiente diagrama. Multiplicamos estos valores por el radio y los desplaz
 
 **Resultado**: 
 
-<img src="https://user-images.githubusercontent.com/92323990/161440601-fb6dba9b-0280-41dc-8b12-74080194df48.png" width="50%" height="50%"/>
+<img src="https://user-images.githubusercontent.com/92323990/161440601-fb6dba9b-0280-41dc-8b12-74080194df48.png" width="40%" height="40%"/>
 
 
 
