@@ -124,10 +124,23 @@ anillo.addChildren(listOf(
 	))
 ```
 
- <img src="https://user-images.githubusercontent.com/92323990/162577490-b9398514-5e4e-4aed-9a1e-a5cd7000b89b.png" width="30%" height="30%"/>  <img src="https://user-images.githubusercontent.com/92323990/162577390-cbebe4bd-5f01-4d00-a1ad-45b6c9585c61.png" width="30%" height="30%"/>
+Para recuperar el ángulo correcto, sólo tenemos que añadir una fracción de la parte que hemos "eliminado" del círculo al sacar los primeros dos elementos al valor de la rotación.
+
+```Kotlin
+val rot = PI/2 + angulo/2
+```
+
+ <img src="https://user-images.githubusercontent.com/92323990/162577490-b9398514-5e4e-4aed-9a1e-a5cd7000b89b.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162577390-cbebe4bd-5f01-4d00-a1ad-45b6c9585c61.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162591049-e174e190-b202-4822-ba26-7d17d08ee6e3.png" width="30%" height="30%"/> 
+
+Si fueramos a visualizar el anillo en el plano, habríamos terminado. Pero el anillo que buscamos crear cuenta con cierta inclinación. Al incluir un valor de perspectiva y usarlo para dividir todos los valores del eje vertical en los que colocamos los elementos, se hace evidente el fallo de este método: no nos permite controlar el orden en el que se dibujan las cartas.
+
+```Kotlin
+val persp = 3
+```
+
+![image](https://user-images.githubusercontent.com/92323990/162591394-9208b091-4938-438c-bfb4-f46585138d92.png)
 
 
 
-Ahora, respecto al arco: tenemos que dibujar primero la primera, y luego la última de forma simétrica en el otro lado de la pantalla. así, sucesivamente, vamos quitando la primera y la última, hasta que no nos queden cartas en la lista. 
 
 ### CONTINUARÁ...
