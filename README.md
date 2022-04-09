@@ -13,7 +13,7 @@ La segunda nos permite especificar el lugar exacto en el cual queremos añadir e
 detrás de todos los demás elementos, mientras que los de un contenedor añadido en el mayor índice de la lista se dibujarán delante de todos los demás. Como queremos que
 los botones se dibujen delante, los añadimos en el índice "1", mientras que el anillo quedará en el índice "0". 
 
-```
+```kotlin
 suspend fun main() = Korge(
 	width = 480,
 	height = 640,
@@ -22,7 +22,7 @@ suspend fun main() = Korge(
 ) {
 
   var cartas = (0..10).toMutableList()
-  var contenedorPrincipal:Container = generarAnillo(cartas)
+  var contenedorPrincipal:Container = generarAnillo(cartas) //en el siguiente paso crearemos esta función
 	var anillo:Container = Container()
 	var botones:Container = Container()
 	contenedorPrincipal.addChildAt(anillo,0)
@@ -36,36 +36,50 @@ lograr eso, y luego iremos viendo cómo podemos ir logrando todo lo demás.
 
 ### Anillo 1.0: Puntos en una circunferencia
 
-```
+```kotlin
 fun generarAnillo(cartas:MutableList<Int>):Container {
-		val r = views.virtualWidth/3
-		val c = Pair(views.virtualWidth/2,views.virtualHeight/2)
-		val angulo = 360/cartas.size * PI/180
-		var anillo = container { }
-		for (i in 1..cartas.size) {
-			var x = c.first + r*cos(angulo*i)
-			var y = c.second + r*sin(angulo*i)
-			anillo.addChild(
-				RoundRect(
-					width = 20.0,
-					height = 30.0, 
-					rx = 2.0, 
-					fill=Colors.CORAL, 
-					stroke=Colors.BLACK, 
-					strokeThickness = 2.0
-				).center().position(x,y)
-			)
-		}
-		return anillo
+	//preparar todo lo necesario
+	val radio = views.virtualWidth/3
+	val centro = Pair(views.virtualWidth/2,views.virtualHeight/2)
+	val angulo = 360/cartas.size * PI/180
+	var anillo = container { }
+	var x: Int
+	var y: Int
+	//averiguar la posición de cada carta
+	for (i in cartas.size.downTo(1) {
+		x = centro.first + radio*cos(angulo*i)
+		y = centro.second + radio*sin(angulo*i)
+		//añadir los elementos visuales de la carta al contenedor en esas posiciones
+		anillo.addChild(
+			RoundRect(
+				width = 40.0,
+				height = 60.0,
+				rx = 2.0,
+				fill=Colors.CORAL,
+				stroke=Colors.BLACK,
+				strokeThickness = 2.0
+			).center().position(x,y)
+		)
+		anillo.addChild(
+			Text(
+				text = cartas.removeFirst().toString(),
+				alignment = TextAlignment.MIDDLE_CENTER,
+				color = Colors.BLACK
+			).position(x, y)
+		)
 	}
+	//devolver el contenedor con los elementos
+	return anillo
+}
 ```
 
-**Radio**: Para hacer que el anillo ocupe horizontalmente siempre 2/3 de la pantalla usaremos el atributo de la vista principal "virtualWidth", que nos da el ancho de la pantalla, y le asignaremos un tercio 
-de su valor al radio.
+**Radio**: Para hacer que el anillo ocupe horizontalmente siempre 2/3 de la pantalla usaremos el atributo de la vista principal "virtualWidth", que nos da el ancho de la pantalla.
 
 **Centro**: De forma similar al radio, encontramos el centro de la pantalla tomando la mitad del valor de virtualWidth y la mitad del valor de virtualHeight.
 
 **Ángulo**: Dividiendo los 360º de la circunferencia entre el número de cartas sabremos cada cuántos grados debemos colocar una carta nueva.
+
+**Anillo**: La función devuelve un objeto del tipo Container. Lo escribimos en minúsculas para añadirlo automáticamente a la vista principal.
 
 **X e Y**: Las coordenadas de la posición exacta donde debemos colocar esa carta nos vienen dadas por el seno y el coseno del ángulo que le corresponde, como puede verse
 en el siguiente diagrama. Multiplicamos estos valores por el radio y los desplazamos al centro de la pantalla sumándoles los valores correspondientes.
@@ -74,8 +88,12 @@ en el siguiente diagrama. Multiplicamos estos valores por el radio y los desplaz
 
 **Resultado**: 
 
-<img src="https://user-images.githubusercontent.com/92323990/161440601-fb6dba9b-0280-41dc-8b12-74080194df48.png" width="40%" height="40%"/>
+<img src="https://user-images.githubusercontent.com/92323990/162572560-d9755c0d-ca4c-4616-965b-b8dbe36f67a1.png" width="40%" height="40%"/>
 
+Este sistema distribuye las cartas a partir del punto (1,0) en el círculo unitario, por lo que debemos rotar el círculo -90 grados para que la primera carta se coloque en la posición más cercana al jugador (-1,0). Para esto creamos una nueva variable que almacene los grados de rotación en radianes (PI/2) y se la restamos al ángulo antes de realizar ningún cálculo con él.
 
+```kotlin
+
+```
 
 ### Anillo 1.1: Puntos en un arco
