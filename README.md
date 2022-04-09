@@ -102,8 +102,9 @@ y = centro.second + radio*sin(angulo*i + rot)
 ### Anillo 1.1: Puntos en un arco
 Aunque pueda parecer que el sistema ya funciona, tenemos que tener en cuenta que lo que buscamos no es realmente un círculo con todas las cartas de nuestra lista, sino las dos primeras cartas presentadas frontalmente al jugador y el resto de cartas distribuídas equitativamente a lo largo de un arco que se posicione detrás. Para conseguirlo, vamos a colocar manualmente los dos primeros elementos y cambiar el total de 360º del círculo por una fracción del mismo. 
 
-![image](https://user-images.githubusercontent.com/92323990/162575697-85da7a31-336b-4836-ba9d-18701c55c924.png)
+![image](https://user-images.githubusercontent.com/92323990/162575697-85da7a31-336b-4836-ba9d-18701c55c924.png) ![image](https://user-images.githubusercontent.com/92323990/162575947-84f658d3-e4a7-4753-97a7-6e434811f90e.png)
+
 
 El problema es que ahora nuestro anillo ha perdido su orientación. Además, tenemos otro problema, que podemos ver claramente si añadimos una constante de perspectiva (simplemente un número por el cual dividiremos todos nuestros valores de Y, para achatar el círculo verticalmente). ¡Las cartas no se dibujan en el orden correcto, por lo que no se solapan como queremos que lo hagan! 
 
-
+Todo esto significa que vamos a necesitar un nuevo enfoque. No podemos ir dibujando una a una las cartas según las vamos sacando de la lista: tenemos que dibujar primero la primera, y luego la última de forma simétrica en el otro lado de la pantalla. así, sucesivamente, vamos quitando la primera y la última, hasta que no nos queden cartas en la lista. 
