@@ -87,13 +87,15 @@ en el siguiente diagrama. Multiplicamos estos valores por el radio y los desplaz
  <img src="https://i.imgur.com/2AvSwEA.gif" width="40%" height="40%"/>
 
 **Resultado**: 
-
-<img src="https://user-images.githubusercontent.com/92323990/162572560-d9755c0d-ca4c-4616-965b-b8dbe36f67a1.png" width="40%" height="40%"/>
-
-Este sistema distribuye las cartas a partir del punto (1,0) en el círculo unitario, por lo que debemos rotar el círculo -90 grados para que la primera carta se coloque en la posición más cercana al jugador (-1,0). Para esto creamos una nueva variable que almacene los grados de rotación en radianes (PI/2) y se la restamos al ángulo antes de realizar ningún cálculo con él.
+Este sistema distribuye las cartas a partir del punto (1,0) en el círculo unitario, por lo que debemos rotar el círculo -90 grados para que la primera carta se coloque en la posición más cercana al jugador (-1,0). Para esto creamos una nueva constante que almacene los grados de rotación en radianes (PI/2) y se la restamos al ángulo con el que estamos trabajando antes de utilizarlo para calcular la posición.
 
 ```kotlin
-
+val rot = PI/2
+//...
+x = centro.first + radio*cos(angulo*i + rot)
+y = centro.second + radio*sin(angulo*i + rot)
 ```
+<img src="https://user-images.githubusercontent.com/92323990/162573006-bd37fa88-a615-4c7f-9354-7700bb9d4ea3.png" width="30%" height="30%"/><img src="https://user-images.githubusercontent.com/92323990/162573048-2286a940-8860-4a28-9ca3-31666cf43874.png" width="30%" height="30%"/>
 
 ### Anillo 1.1: Puntos en un arco
+Aunque pueda parecer que el sistema ya funciona, tenemos que tener en cuenta que lo que buscamos no es realmente un círculo con todas las cartas de nuestra lista, sino las dos primeras cartas presentadas frontalmente al jugador y el resto de cartas distribuídas equitativamente a lo largo de un arco que se posicione detrás. 
