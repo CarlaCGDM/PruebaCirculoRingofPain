@@ -1,19 +1,7 @@
-import com.soywiz.klogger.AnsiEscape
 import com.soywiz.korge.*
-import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
-import com.soywiz.korge.view.tween.hide
-import com.soywiz.korge.view.tween.show
 import com.soywiz.korim.color.Colors
-import com.soywiz.korim.color.RGBA
-import com.soywiz.korim.font.readBitmapFont
-import com.soywiz.korim.format.readBitmap
-import com.soywiz.korim.paint.DefaultPaint
-import com.soywiz.korim.paint.Paint
 import com.soywiz.korim.text.TextAlignment
-import com.soywiz.korio.file.std.resourcesVfs
-import com.soywiz.korma.geom.Rectangle
-import com.soywiz.korma.geom.vector.roundRect
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.log
@@ -22,8 +10,8 @@ import kotlin.math.sin
 suspend fun main() = Korge(
 	width = 480,
 	height = 640,
-	title="2048",
-	bgcolor = RGBA(253, 247, 240)
+	title="Anillo",
+	bgcolor =  Colors.ANTIQUEWHITE
 ) {
 	/* val font = resourcesVfs["clear_sans.fnt"].readBitmapFont()
 	val restartImg = resourcesVfs["restart.png"].readBitmap()
@@ -130,53 +118,56 @@ suspend fun main() = Korge(
 		return nuevasCartas
 	}
 
-	fun generarRing(cartas: MutableList<Int>):Container {
-		var contenedor = container {  }
-		var cards = mutableListOf<Int>()
-		cards += cartas
-		val r = views.virtualWidth / 3.5
-		val angle = 315 / cards.size * PI / 180
-		val rot = if (cards.size % 2 == 0) PI / 2 else PI / 2 + angle / 2
-		val persp = 3
-		val center = Pair(views.virtualWidth / 2, views.virtualHeight / 2)
-		graphics {
-			roundRect(90.0, 130.0, 2.0,2.0,fill=Colors["#ce4357"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(center.first - r / 3, center.second + r / persp)
-			roundRect(90.0, 130.0, 2.0,2.0,fill=Colors["#ce4357"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(center.first + r / 3, center.second + r / persp)
-			text(cards.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER).position(
-				center.first - r / 3,
-				center.second + r / persp
-			)
-			text(cards.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER).position(
-				center.first + r / 3,
-				center.second + r / persp
-			)
-			for (i in cards.size.downTo(1)) {
-				val content: Int
-				val x: Double
-				val y: Double
-				val xSize = 90 * 0.90
-				val ySize = 130 * 0.90
-				if (i % 2 != 0) {
-					x = center.first + r * -cos(angle * i / 2 - rot)
-					y = center.second + r * sin(angle * i / 2 - rot) / persp
-					content = cards.removeLast()
-				} else {
-					x = center.first + r * -cos(-angle * (i - 1) / 2 - rot)
-					y = center.second + r * sin(-angle * (i - 1) / 2 - rot) / persp
-					content = cards.removeFirst()
-				}
-				var newText = Text(content.toString(), alignment = TextAlignment.MIDDLE_CENTER).position(x, y)
-				var newCard = RoundRect(xSize, ySize, 2.0,2.0,fill=Colors["#8b93cd"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(x, y)
-				contenedor.addChildAt(newText,0)
-				contenedor.addChildAt(newCard,0)
-			}
+	fun generarRing(cards: MutableList<Int>):Container {
+		val radio = views.virtualWidth / 3.5
+		val centro = Pair(views.virtualWidth / 2.0, views.virtualHeight / 2.0)
+		val angulo = 315 / cards.size * PI / 180
+		val rot = if (cards.size % 2 == 0) PI / 2 else PI / 2 + angulo / 2
+		val persp = 3 //inclinación del círculo, vista superior = 1
+		val alto = 130.0
+		val ancho = 90.0
+		val sep = ancho/2 + 2 //separación entre las dos cartas frontales
+		var anillo = container {  }
+		var x: Double
+		var y: Double
+		if (cards.size == 1) {
+			roundRect(ancho, alto, 2.0,2.0,fill=Colors["#ce4357"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(centro.first, centro.second + radio / persp)
+			text(cards.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER).position(centro.first , centro.second + radio / persp)
+			return anillo
 		}
-		return contenedor
+		roundRect(ancho, alto, 2.0,2.0,fill=Colors["#ce4357"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(centro.first -  sep, centro.second + radio / persp)
+		roundRect(ancho, alto, 2.0,2.0,fill=Colors["#ce4357"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(centro.first + sep, centro.second + radio / persp)
+		text(cards.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER).position(
+			centro.first - sep,
+			centro.second + radio / persp
+		)
+		text(cards.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER).position(
+			centro.first + sep,
+			centro.second + radio / persp
+		)
+		for (i in cards.size.downTo(1)) {
+			val content: Int
+			if (i % 2 != 0) {
+				x = centro.first + radio * -cos(angulo * i / 2 - rot)
+				y = centro.second + radio * sin(angulo * i / 2 - rot) / persp
+				content = cards.removeLast()
+			} else {
+				x = centro.first + radio * -cos(-angulo * (i - 1) / 2 - rot)
+				y = centro.second + radio * sin(-angulo * (i - 1) / 2 - rot) / persp
+				content = cards.removeFirst()
+			}
+			var newText = Text(content.toString(), alignment = TextAlignment.MIDDLE_CENTER).position(x, y)
+			var newCard = RoundRect(ancho*0.9, alto*0.9, 2.0,2.0,fill=Colors["#8b93cd"],stroke=Colors.BLACK, strokeThickness = 2.0).center().position(x, y)
+			anillo.addChildAt(newText,0)
+			anillo.addChildAt(newCard,0)
+		}
+		return anillo
 	}
 
+/*
 
 	//pointsOnCircle((1..15).toList() as MutableList<Int>,200, Pair(250,325))
-	var cartas = (1..15).toMutableList()
+	var cartas = (1..5).toMutableList()
 	cartas = rotarCartasLeft(cartas)
 	println(cartas)
 
@@ -202,5 +193,62 @@ suspend fun main() = Korge(
 		}
 
 
+	}
+	*/
+
+	fun generarAnillo(cartas:MutableList<Int>):Container {
+		//preparar todo lo necesario
+		val mitad = cartas.size/2-1
+		val radio = views.virtualWidth/3
+		val centro = Pair((views.virtualWidth/2.0), (views.virtualHeight/2.0))
+		val angulo = 300.0/cartas.size * PI/180
+		val rot = PI - 60*PI/180 + angulo/2
+		val ancho = 40.0*2
+		val alto = 60.0*2
+		val sep = ancho/2 + 5
+		val persp = 3
+		var anillo = container { }
+		var x: Double
+		var y: Double
+		//si solo hay una carta, la colocamos en la posición central
+		if (cartas.size == 1) {
+			anillo.addChildren(listOf(
+				RoundRect(width = ancho*1.2, height = alto*1.2, rx = 2.0, fill = Colors.GOLD, stroke = Colors.BLACK, strokeThickness = 2.0,).center().position(centro.first, centro.second+radio / persp),
+				Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(centro.first, centro.second+radio / persp)
+			))
+			return anillo
+		}
+		//si hay dos o más, colocamos las dos primeras en la posición central con una pequeña separación
+		val primera = RoundRect(width = ancho*1.1, height = alto*1.1, rx = 2.0, fill = Colors.GOLD, stroke = Colors.BLACK, strokeThickness = 2.0,).center().position(centro.first-sep, centro.second+radio / persp)
+		val segunda = RoundRect(width = ancho*1.1, height = alto*1.1, rx = 2.0, fill = Colors.GOLD, stroke = Colors.BLACK, strokeThickness = 2.0,).center().position(centro.first+sep, centro.second+radio / persp)
+		val primeraText = Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(centro.first-sep, centro.second+radio / persp)
+		val segundaText = Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(centro.first+sep, centro.second+radio / persp)
+		//averiguar la posición de cada carta
+		for (i in cartas.size.downTo(1)) {
+			x = centro.first + radio*cos(angulo*i + rot)
+			y = centro.second + radio*sin(angulo*i + rot) / persp
+			//añadir los elementos visuales de la carta al contenedor en esas posiciones
+			if (i <= mitad) {
+				anillo.addChildAt(RoundRect(width = ancho, height = alto, rx = 2.0, fill=Colors.CORAL, stroke=Colors.BLACK, strokeThickness = 2.0).center().position(x,y),anillo.numChildren)
+				anillo.addChildAt(Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(x, y),anillo.numChildren)
+			} else {
+				anillo.addChildAt(Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(x, y),0)
+				anillo.addChildAt(RoundRect(width = ancho, height = alto, rx = 2.0, fill=Colors.CORAL, stroke=Colors.BLACK, strokeThickness = 2.0).center().position(x,y),0)
+			}
+			}
+		anillo.addChildren(listOf(primera,segunda,primeraText,segundaText))
+		//devolver el contenedor con los elementos
+			return anillo
+	}
+
+	var cartas = (1..15).toMutableList()
+	var contenedorPrincipal:Container = generarAnillo(cartas)
+	var anillo:Container = Container()
+	var botones:Container = Container()
+	contenedorPrincipal.addChildAt(anillo,0)
+	contenedorPrincipal.addChildAt(botones,1)
+
+	graphics {
+		contenedorPrincipal
 	}
 }
