@@ -124,9 +124,7 @@ anillo.addChildren(listOf(
 	))
 ```
 
-
-![image](https://user-images.githubusercontent.com/92323990/162577490-b9398514-5e4e-4aed-9a1e-a5cd7000b89b.png)
- ![image](https://user-images.githubusercontent.com/92323990/162577390-cbebe4bd-5f01-4d00-a1ad-45b6c9585c61.png)
+ <img src="https://user-images.githubusercontent.com/92323990/162577490-b9398514-5e4e-4aed-9a1e-a5cd7000b89b.png" width="40%" height="40%"/>  <img src="https://user-images.githubusercontent.com/92323990/162577390-cbebe4bd-5f01-4d00-a1ad-45b6c9585c61.png" width="40%" height="40%"/>
 
 
 
