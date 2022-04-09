@@ -97,8 +97,6 @@ y = centro.second + radio*sin(angulo*i + rot)
 ```
 <img src="https://user-images.githubusercontent.com/92323990/162573006-bd37fa88-a615-4c7f-9354-7700bb9d4ea3.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162573048-2286a940-8860-4a28-9ca3-31666cf43874.png" width="30%" height="30%"/>
 
-### A PARTIR DE AQUI NO ESTA TERMINADO. NO LEER MAS ALLA DE ESTE PUNTO.
-
 ### Anillo 1.1: Puntos en un arco
 La base funciona, pero lo que buscamos no es realmente un círculo, sino una o dos cartas frontales con el resto distribuídas a lo largo de un arco detrás. La primera parte es fácil: si sólo tenemos una carta, vamos a colocarla en la posición (centro.x, centro.y-radio). Si tenemos dos o más, vamos a colocar las dos primeras en las posiciones (centro.x-separacion, centro.y-radio) y (centro.x+separacion, centro.y-radio). 
 
@@ -133,3 +131,5 @@ anillo.addChildren(listOf(
 
 
 Ahora, respecto al arco: tenemos que dibujar primero la primera, y luego la última de forma simétrica en el otro lado de la pantalla. así, sucesivamente, vamos quitando la primera y la última, hasta que no nos queden cartas en la lista. 
+
+### CONTINUARÁ...
