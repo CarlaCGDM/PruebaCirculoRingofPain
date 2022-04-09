@@ -95,7 +95,15 @@ val rot = PI/2
 x = centro.first + radio*cos(angulo*i + rot)
 y = centro.second + radio*sin(angulo*i + rot)
 ```
-<img src="https://user-images.githubusercontent.com/92323990/162573006-bd37fa88-a615-4c7f-9354-7700bb9d4ea3.png" width="30%" height="30%"/><img src="https://user-images.githubusercontent.com/92323990/162573048-2286a940-8860-4a28-9ca3-31666cf43874.png" width="30%" height="30%"/>
+<img src="https://user-images.githubusercontent.com/92323990/162573006-bd37fa88-a615-4c7f-9354-7700bb9d4ea3.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162573048-2286a940-8860-4a28-9ca3-31666cf43874.png" width="30%" height="30%"/>
+
+### A PARTIR DE AQUI NO ESTA TERMINADO. NO LEER MAS ALLA DE ESTE PUNTO.
 
 ### Anillo 1.1: Puntos en un arco
-Aunque pueda parecer que el sistema ya funciona, tenemos que tener en cuenta que lo que buscamos no es realmente un círculo con todas las cartas de nuestra lista, sino las dos primeras cartas presentadas frontalmente al jugador y el resto de cartas distribuídas equitativamente a lo largo de un arco que se posicione detrás. 
+Aunque pueda parecer que el sistema ya funciona, tenemos que tener en cuenta que lo que buscamos no es realmente un círculo con todas las cartas de nuestra lista, sino las dos primeras cartas presentadas frontalmente al jugador y el resto de cartas distribuídas equitativamente a lo largo de un arco que se posicione detrás. Para conseguirlo, vamos a colocar manualmente los dos primeros elementos y cambiar el total de 360º del círculo por una fracción del mismo. 
+
+![image](https://user-images.githubusercontent.com/92323990/162575697-85da7a31-336b-4836-ba9d-18701c55c924.png)
+
+El problema es que ahora nuestro anillo ha perdido su orientación. Además, tenemos otro problema, que podemos ver claramente si añadimos una constante de perspectiva (simplemente un número por el cual dividiremos todos nuestros valores de Y, para achatar el círculo verticalmente). ¡Las cartas no se dibujan en el orden correcto, por lo que no se solapan como queremos que lo hagan! 
+
+
