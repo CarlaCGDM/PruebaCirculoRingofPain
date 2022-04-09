@@ -40,7 +40,7 @@ lograr eso, y luego iremos viendo cómo podemos ir logrando todo lo demás.
 fun generarAnillo(cartas:MutableList<Int>):Container {
 	//preparar todo lo necesario
 	val radio = views.virtualWidth/3
-	val centro = Pair(views.virtualWidth/2,views.virtualHeight/2)
+	val centro = Pair(views.virtualWidth/2.0,views.virtualHeight/2.0)
 	val angulo = 360/cartas.size * PI/180
 	var anillo = container { }
 	var x: Int
@@ -100,11 +100,36 @@ y = centro.second + radio*sin(angulo*i + rot)
 ### A PARTIR DE AQUI NO ESTA TERMINADO. NO LEER MAS ALLA DE ESTE PUNTO.
 
 ### Anillo 1.1: Puntos en un arco
-Aunque pueda parecer que el sistema ya funciona, tenemos que tener en cuenta que lo que buscamos no es realmente un círculo con todas las cartas de nuestra lista, sino las dos primeras cartas presentadas frontalmente al jugador y el resto de cartas distribuídas equitativamente a lo largo de un arco que se posicione detrás. Para conseguirlo, vamos a colocar manualmente los dos primeros elementos y cambiar el total de 360º del círculo por una fracción del mismo. 
+La base funciona, pero lo que buscamos no es realmente un círculo, sino una o dos cartas frontales con el resto distribuídas a lo largo de un arco detrás. La primera parte es fácil: si sólo tenemos una carta, vamos a colocarla en la posición (centro.x, centro.y-radio). Si tenemos dos o más, vamos a colocar las dos primeras en las posiciones (centro.x-separacion, centro.y-radio) y (centro.x+separacion, centro.y-radio). 
 
-![image](https://user-images.githubusercontent.com/92323990/162575697-85da7a31-336b-4836-ba9d-18701c55c924.png) ![image](https://user-images.githubusercontent.com/92323990/162575947-84f658d3-e4a7-4753-97a7-6e434811f90e.png)
+La separación tendremos que determinarla según el tamaño de nuestras cartas, para asegurarnos de que no se toquen debe ser mayor a la mitad del ancho de la carta, ya que la distancia entre sus centros cuando se colocan una junto a la otra es del total del ancho de la carta (la mitad de cada una). Podemos aprovechar para crear variables que se encarguen del ancho y el alto de la carta, de este modo será más fácil hacer que las dos cartas frontales sean un poco más grandes.
+
+```kotlin
+val ancho = 40.0
+val alto = 60.0
+val sep = ancho/2 + 20
+
+//si solo hay una carta, la colocamos en la posición central
+if (cartas.size == 1) {
+	anillo.addChildren(listOf(
+		RoundRect(width = ancho, height = alto, /*...*/).center().position(centro.first, centro.second+radio),
+		Text(text = cartas.removeFirst().toString(), /*...*/).position(centro.first, centro.second+radio)
+	))
+	return anillo
+}
+//si hay dos o más, colocamos las dos primeras en la posición central con una pequeña separación
+anillo.addChildren(listOf(
+	RoundRect(width = ancho, height = alto, /*...*/).center().position(centro.first-sep, centro.second+radio),
+	RoundRect(width = ancho, height = alto, /*...*/).center().position(centro.first+sep, centro.second+radio),
+	Text(text = cartas.removeFirst().toString(), /*...*/).position(centro.first-sep, centro.second+radio),
+	Text(text = cartas.removeFirst().toString(), /*...*/).position(centro.first+sep, centro.second+radio),
+	))
+```
 
 
-El problema es que ahora nuestro anillo ha perdido su orientación. Además, tenemos otro problema, que podemos ver claramente si añadimos una constante de perspectiva (simplemente un número por el cual dividiremos todos nuestros valores de Y, para achatar el círculo verticalmente). ¡Las cartas no se dibujan en el orden correcto, por lo que no se solapan como queremos que lo hagan! 
+![image](https://user-images.githubusercontent.com/92323990/162577490-b9398514-5e4e-4aed-9a1e-a5cd7000b89b.png)
+ ![image](https://user-images.githubusercontent.com/92323990/162577390-cbebe4bd-5f01-4d00-a1ad-45b6c9585c61.png)
 
-Todo esto significa que vamos a necesitar un nuevo enfoque. No podemos ir dibujando una a una las cartas según las vamos sacando de la lista: tenemos que dibujar primero la primera, y luego la última de forma simétrica en el otro lado de la pantalla. así, sucesivamente, vamos quitando la primera y la última, hasta que no nos queden cartas en la lista. 
+
+
+Ahora, respecto al arco: tenemos que dibujar primero la primera, y luego la última de forma simétrica en el otro lado de la pantalla. así, sucesivamente, vamos quitando la primera y la última, hasta que no nos queden cartas en la lista. 
