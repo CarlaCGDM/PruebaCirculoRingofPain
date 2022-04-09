@@ -108,7 +108,6 @@ La separación tendremos que determinarla según el tamaño de nuestras cartas, 
 val ancho = 40.0
 val alto = 60.0
 val sep = ancho/2 + 20
-
 //si solo hay una carta, la colocamos en la posición central
 if (cartas.size == 1) {
 	anillo.addChildren(listOf(
@@ -118,6 +117,7 @@ if (cartas.size == 1) {
 	return anillo
 }
 //si hay dos o más, colocamos las dos primeras en la posición central con una pequeña separación
+//el bucle se encargará del resto
 anillo.addChildren(listOf(
 	RoundRect(width = ancho, height = alto, /*...*/).center().position(centro.first-sep, centro.second+radio),
 	RoundRect(width = ancho, height = alto, /*...*/).center().position(centro.first+sep, centro.second+radio),
