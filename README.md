@@ -85,7 +85,6 @@ fun generarAnillo(cartas:MutableList<Int>):Container {
 **X e Y**: Las coordenadas de la posición exacta donde debemos colocar esa carta nos vienen dadas por el seno y el coseno del ángulo que le corresponde, como puede verse
 en el siguiente diagrama. Multiplicamos estos valores por el radio y los desplazamos al centro de la pantalla sumándoles los valores correspondientes.
 
-**Resultado**: 
 Este sistema distribuye las cartas a partir del punto (1,0) en el círculo unitario, por lo que debemos rotar el círculo -90 grados para que la primera carta se coloque en la posición más cercana al jugador (-1,0). Para esto creamos una nueva constante que almacene los grados de rotación en radianes (PI/2) y se la restamos al ángulo con el que estamos trabajando antes de utilizarlo para calcular la posición.
 
 ```kotlin
@@ -173,8 +172,6 @@ anillo.addChildren(listOf(primeraCarta,segundaCarta,primerTexto,segundoTexto))
 
 <img src="https://user-images.githubusercontent.com/92323990/162639239-e10eb6d4-39f4-453c-aa5c-3c958544af62.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162639120-3c96ed53-aa45-41dc-ada0-78d4efcb99d6.png" width="30%" height="30%"/>
 
-## A PARTIR DE AQUI NO ESTA TERMINADO NO LEER A PARTIR DE ESTE PUNTO ##
-
 ### Anillo 1.3: Degradado de Color:
 
 Para que el anillo adquiera una sensación de tres dimensiones, vamos a hacer que las cartas que se encuentren en la parte trasera del anillo se vean un poco más oscuras que las que se encuentran en la parte frontal. Para esto añadiremos una copia en color negro de la carta que dibujaremos por encima de ella, alternando el valor de su canal alpha para variar su transparencia. Necesitamos que la primera carta negra que dibujamos (la que está más cerca del jugador) tenga un valor de alpha 0 (transparencia completa) y que la última tenga un valor de alpha alrededor de 0.5 (semi-transparente, ya que el valor 1 indica opacidad completa, y es el valor por defecto.)
@@ -201,7 +198,7 @@ anillo.addChildAt(RoundRect(fill=Colors.BLACK, /*...*/).center().position(x,y).a
 
 <img src="https://user-images.githubusercontent.com/92323990/162644054-972fe84c-0fcc-4232-bdaa-25982e551a7d.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162644087-0326c4f8-2d99-4ccb-bebc-7e9a29bcbeb6.png" width="30%" height="30%"/>
 
-### Botones
+## Botones:
 
 Queremos poder rotar la posición de las cartas según pulsamos dos botones, así que vamos a añadirlos al contenedor que creamos originalmente para ellos y añadirles un método "onClick" que primero haga girar la lista de cartas y luego vuelva a llamar a la función que genera el anillo. Por suerte, un método para hacer girar una lista hacia la derecha o la izquierda ya viene incluido en Kotlin (shift) así que lo usaremos.
 
