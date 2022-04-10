@@ -21,12 +21,13 @@ suspend fun main() = Korge(
 	bgcolor =  Colors.ANTIQUEWHITE
 ) {
 
-  var cartas = (0..10).toMutableList()
-  var contenedorPrincipal:Container = generarAnillo(cartas) //en el siguiente paso crearemos esta función
-	var anillo:Container = Container()
-	var botones:Container = Container()
-	contenedorPrincipal.addChildAt(anillo,0)
-	contenedorPrincipal.addChildAt(botones,1)
+var cartas = (0..10).toMutableList()
+var contenedorPrincipal:Container = generarAnillo(cartas) //en el siguiente paso crearemos esta función
+var anillo:Container = Container()
+var botones:Container = Container()
+contenedorPrincipal.addChildAt(anillo,0)
+contenedorPrincipal.addChildAt(botones,1)
+
 }
 ```
 
