@@ -141,7 +141,41 @@ val persp = 3
 
 ![image](https://user-images.githubusercontent.com/92323990/162591394-9208b091-4938-438c-bfb4-f46585138d92.png)
 
+## A PARTIR DE AQUI NO ESTA TERMINADO NO LEER A PARTIR DE ESTE PUNTO ##
 
+### Anillo 1.2: Orden de las Cartas
 
+Hemos visto que podemos indicar a Korge dónde queremos colocar las cartas en la lista de objetos hijos de un contenedor de vistas. Si nos fijamos en lo que tenemos hasta ahora, la segunda mitad del anillo sí se dibuja en el orden que nosotros buscamos, pero la primera se dibuja en el orden inverso. Para arreglar esto, podemos dividir el bucle de generación del anillo en dos mitades (hacer dos bucles) o incluir una comprobación antes de dibujar cada carta para saber si debemos invertir el orden en el que se dibuja o no. 
+
+//código
+
+//foto
+
+Ahora que el anillo ya se dibuja como debería, sólo tenemos que esperar a que el anillo se haya terminado de dibujar para añadir las dos cartas frontales. Para esto, las definimos como contenido de variables y las añadimos con addChild() al final de la función. 
+
+//codigo
+
+//foto
+
+### Anillo 1.3: Degradado de Color:
+
+Para que el anillo adquiera una sensación de tres dimensiones, vamos a hacer que las cartas que se encuentren en la parte trasera del anillo se vean un poco más oscuras que las que se encuentran en la parte frontal. Para esto añadiremos una copia en color negro de la carta que dibujaremos por encima de ella, alternando el valor de su canal alpha para variar su transparencia. Necesitamos que la primera carta negra que dibujamos (la que está más cerca del jugador) tenga un valor de alpha 0 (transparencia completa) y que la última tenga un valor de alpha alrededor de 0.5 (semi-transparente, ya que el valor 1 indica opacidad completa, y es el valor por defecto.)
+
+Para obtener este valor vamos a usar la posición de la carta. Para la primera mitad del círculo, que toma los valores desde el 3 hasta la mitad de lo que queda de la lista, le daremos al alpha de la carta un valor de i/total de cartas. De este modo, en una lista de 10 cartas, la carta negra que se encuentre en la posición 3 tendrá un 0.3 (30%) de opacidad, la que se encuentre en la posición 4 un 0.4 (40%), etc. 
+
+//codigo
+//foto
+
+Para la segunda mitad tenemos que hacer lo mismo, pero invirtiendo la direccion en la que progresa el "oscurecimiento" de la carta. Si siguieramos usando la misma formula, acabaríamos con un degradado que se oscureciera hasta que la ultima carta se viera completamente negra. (imagen) Sin embargo, si invertimos el valor usando 1 - i/total, obtenemos el resultado que buscamos (imagen). 
+
+//foto 1 //foto2
+
+### Botones
+
+Queremos poder rotar la posición de las cartas según pulsamos dos botones, así que vamos a añadirlos al contenedor que creamos originalmente para ellos y añadirles un método "onClick" que primero haga girar la lista de cartas y luego vuelva a llamar a la función que genera el anillo. Por suerte, un método para hacer girar una lista hacia la derecha o la izquierda ya viene incluido en Kotlin (shift) así que lo usaremos.
+
+//codigo
+
+//gif del resultado final 
 
 ### CONTINUARÁ...
