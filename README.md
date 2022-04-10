@@ -179,14 +179,27 @@ anillo.addChildren(listOf(primeraCarta,segundaCarta,primerTexto,segundoTexto))
 
 Para que el anillo adquiera una sensación de tres dimensiones, vamos a hacer que las cartas que se encuentren en la parte trasera del anillo se vean un poco más oscuras que las que se encuentran en la parte frontal. Para esto añadiremos una copia en color negro de la carta que dibujaremos por encima de ella, alternando el valor de su canal alpha para variar su transparencia. Necesitamos que la primera carta negra que dibujamos (la que está más cerca del jugador) tenga un valor de alpha 0 (transparencia completa) y que la última tenga un valor de alpha alrededor de 0.5 (semi-transparente, ya que el valor 1 indica opacidad completa, y es el valor por defecto.)
 
-Para obtener este valor vamos a usar la posición de la carta. Para la primera mitad del círculo, que toma los valores desde el 3 hasta la mitad de lo que queda de la lista, le daremos al alpha de la carta un valor de i/total de cartas. De este modo, en una lista de 10 cartas, la carta negra que se encuentre en la posición 3 tendrá un 0.3 (30%) de opacidad, la que se encuentre en la posición 4 un 0.4 (40%), etc. 
+Para obtener este valor vamos a usar la posición de la carta. Para la primera mitad del círculo, que toma los valores desde el 3 hasta la mitad de lo que queda de la lista, le daremos al alpha de la carta un valor de i/total de cartas. De este modo, en una lista de 10 cartas, la carta negra que se encuentre en la posición 3 tendrá un 0.3 (30%) de opacidad, la que se encuentre en la posición 4 un 0.4 (40%), etc. No debemos olvidar operar con números decimales para poder obtener el valor alpha correctamente (toFloat() o toDouble() en alguno de los valores).
 
-//codigo
-//foto
+```Kotlin
+if (i <= mitad) {
+	//carta
+	//texto
+	anillo.addChildAt(RoundRect(fill=Colors.BLACK, /*...*/).center().position(x,y).alpha(i/total.toDouble()), 0)
+} else {
+	anillo.addChildAt(RoundRect(fill=Colors.BLACK, /*...*/).center().position(x,y).alpha(i/total.toDouble()), 0)
+	//texto
+	//carta
+}
+```
 
-Para la segunda mitad tenemos que hacer lo mismo, pero invirtiendo la direccion en la que progresa el "oscurecimiento" de la carta. Si siguieramos usando la misma formula, acabaríamos con un degradado que se oscureciera hasta que la ultima carta se viera completamente negra. (imagen) Sin embargo, si invertimos el valor usando 1 - i/total, obtenemos el resultado que buscamos (imagen). 
+Para la mitad derecha tenemos que invertir la direccion en la que progresa el "oscurecimiento" de la carta. Si siguieramos usando la misma formula, acabaríamos con un degradado que se oscureciera hasta que la ultima carta se viera completamente negra como vemos en la primera imagen. Sin embargo, si invertimos el valor usando 1 - i/total, obtenemos el resultado que buscamos. 
 
-//foto 1 //foto2
+```Kotlin
+anillo.addChildAt(RoundRect(fill=Colors.BLACK, /*...*/).center().position(x,y).alpha(1-i/total.toDouble()), 0)
+```
+
+<img src="https://user-images.githubusercontent.com/92323990/162644054-972fe84c-0fcc-4232-bdaa-25982e551a7d.png" width="30%" height="30%"/> <img src="https://user-images.githubusercontent.com/92323990/162644087-0326c4f8-2d99-4ccb-bebc-7e9a29bcbeb6.png" width="30%" height="30%"/>
 
 ### Botones
 
