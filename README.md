@@ -1,7 +1,8 @@
 # Creando el anillo del Ring of Pain (Kotlin/Korge)
 Vamos a ver paso a paso como llegar a tener una función que genere un anillo de cartas distribuídas de manera similar al formato visto en el juego Ring of Pain a partir de una lista. Aunque en el producto final usaremos una lista de objetos tipo carta, aquí usaremos una lista de enteros para ver las cosas con mayor claridad.
 
-![gif](https://i.ibb.co/7bqzWLp/rotacion.gif)
+![ringOfPain](https://user-images.githubusercontent.com/92323990/162646124-e0b10f35-2eb6-4d87-a901-25fa86d2a7ff.gif)
+
 ## Vistas en Korge 
 Lo primero que tenemos que saber de Korge es que los distintos elementos que queramos mostrar por pantalla (imágenes, texto, etc.) 
 se llaman *vistas*, ya que heredan de la clase abstracta "View". Estas vistas se agrupan en *contenedores* (clase "Container") para poder organizarlas y trabajar con ellas.
@@ -22,11 +23,12 @@ suspend fun main() = Korge(
 ) {
 
 var cartas = (0..10).toMutableList()
-var contenedorPrincipal:Container = generarAnillo(cartas) //en el siguiente paso crearemos esta función
+//es importante usar una copia de la lista original, ya que a lo largo de la función la iremos destruyendo
+var contenedorPrincipal:Container = generarAnillo(ArrayList(cartas)) //en el siguiente paso crearemos esta función
 var anillo:Container = Container()
 var botones:Container = Container()
-contenedorPrincipal.addChildAt(anillo,0)
-contenedorPrincipal.addChildAt(botones,1)
+contenedorPrincipal.addChild(anillo)
+contenedorPrincipal.addChild(botones)
 
 }
 ```
@@ -200,8 +202,26 @@ anillo.addChildAt(RoundRect(fill=Colors.BLACK, /*...*/).center().position(x,y).a
 
 ## Botones:
 
-Queremos poder rotar la posición de las cartas según pulsamos dos botones, así que vamos a añadirlos al contenedor que creamos originalmente para ellos y añadirles un método "onClick" que primero haga girar la lista de cartas y luego vuelva a llamar a la función que genera el anillo. Por suerte, un método para hacer girar una lista hacia la derecha o la izquierda ya viene incluido en Kotlin (shift) así que lo usaremos.
+Queremos poder rotar la posición de las cartas según pulsamos dos botones, así que vamos a añadirlos al contenedor que creamos originalmente para ellos y añadirles un método ".onClick{ }" que primero haga girar la lista de cartas y luego vuelva a llamar a la función que genera el anillo. Por suerte, un método para hacer girar una lista hacia la derecha o la izquierda ya viene incluido en Kotlin (rotated) así que lo usaremos.
 
-//codigo
+```Kotlin
+var botonDerecho = Circle(/*...*/).center().position(/*x e y*/).onClick{
+	cartas = cartas.rotated(-1).toMutableList()
+	contenedorPrincipal=generarAnillo(ArrayList(cartas))
+	}
+var botonIzquierdo = Circle(/*...*/).center().position(/*...*/).onClick{
+	cartas = cartas.rotated(1).toMutableList()
+	contenedorPrincipal=generarAnillo(ArrayList(cartas))
+	}
+var textoDerecho = Text(text = ">", alignment = TextAlignment.MIDDLE_CENTER, /*...*/).position(/*...*/)
+var textoIzquierdo = Text(text = "<", alignment = TextAlignment.MIDDLE_CENTER, /*...*/).position(/*...*/)
+botones.addChild(botonDerecho!!)
+botones.addChild(textoDerecho)
+botones.addChild(botonIzquierdo!!)
+botones.addChild(textoIzquierdo)
+```
 
-//gif del resultado final 
+<img src="https://user-images.githubusercontent.com/92323990/162646124-e0b10f35-2eb6-4d87-a901-25fa86d2a7ff.gif" width="30%" height="30%"/>
+
+(Ya mejoraré este tutorial con una forma más elegante de colocar los botones en pantalla y organizar todo el asunto.)
+
