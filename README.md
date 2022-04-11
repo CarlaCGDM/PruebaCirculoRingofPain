@@ -24,7 +24,7 @@ suspend fun main() = Korge(
 
 var cartas = (0..10).toMutableList()
 //es importante usar una copia de la lista original, ya que a lo largo de la función la iremos destruyendo
-var contenedorPrincipal:Container = Container()
+var contenedorPrincipal:Container = container { } //lo añadimos automaticamente a la vista principal
 var anillo:Container = generarAnillo(ArrayList(cartas)) //en el siguiente paso crearemos esta función
 var botones:Container = Container()
 contenedorPrincipal.addChild(anillo)
