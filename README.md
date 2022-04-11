@@ -223,5 +223,5 @@ botones.addChild(textoIzquierdo)
 
 <img src="https://user-images.githubusercontent.com/92323990/162646124-e0b10f35-2eb6-4d87-a901-25fa86d2a7ff.gif" width="30%" height="30%"/>
 
-(Ya mejoraré este tutorial con una forma más elegante de colocar los botones en pantalla y organizar todo el asunto.)
+(Ya mejoraré este tutorial con una forma más elegante de colocar los botones en pantalla y organizar todo el asunto. Si has llegado hasta aquí... ¡enhorabuena! Y gracias por leer^^)
 
