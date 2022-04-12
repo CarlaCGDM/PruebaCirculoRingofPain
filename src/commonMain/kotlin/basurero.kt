@@ -6,6 +6,8 @@ import kotlin.math.cos
 import kotlin.math.log
 import kotlin.math.sin
 
+/*COSAS ANTIGUAS QUE NO CREO QUE VAYA A NECESITAR PERO QUIZAS SI */
+
 /* val font = resourcesVfs["clear_sans.fnt"].readBitmapFont()
 val restartImg = resourcesVfs["restart.png"].readBitmap()
 val undoImg = resourcesVfs["undo.png"].readBitmap()

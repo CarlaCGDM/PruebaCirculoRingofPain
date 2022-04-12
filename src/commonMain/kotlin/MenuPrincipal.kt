@@ -6,6 +6,7 @@ import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import com.soywiz.korio.async.launchImmediately
 
+/* ESCENA DEL MENU PRINCIPAL*/
 
 class MenuPrincipal() : Scene() {
     override suspend fun Container.sceneInit() {

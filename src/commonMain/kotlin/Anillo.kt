@@ -10,6 +10,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
+/* NO ESTA CONECTADO AUN A NADA*/
 
 
 class Anillo() : Scene() {
