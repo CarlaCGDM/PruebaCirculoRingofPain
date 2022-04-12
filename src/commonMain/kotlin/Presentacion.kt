@@ -1,21 +1,14 @@
 import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.blockingSleep
 import com.soywiz.korge.input.onClick
+import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
-import com.soywiz.korge.scene.delay
-import com.soywiz.korge.ui.UIButton
 import com.soywiz.korge.ui.uiButton
-import com.soywiz.korge.ui.uiRadioButton
-import com.soywiz.korge.ui.uiSkin
 import com.soywiz.korge.view.*
-import com.soywiz.korim.color.Colors
+import com.soywiz.korge.view.filter.TransitionFilter
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korim.text.TextAlignment
-import com.soywiz.korim.text.TextRendererActions
-import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
-import com.soywiz.korma.geom.mutable
 
 class Presentacion() : Scene() {
     override suspend fun Container.sceneInit() {
@@ -53,16 +46,24 @@ class Presentacion() : Scene() {
         var texto1 = text(conversacion.opcion1?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 - 120)
         var texto3 = text(conversacion.opcion3?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER) .alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 + 120)
 
+        var botonComenzar =
+            uiButton(width = 100.0, height = 50.0, text = "Entrar").visible(false)
+                .centerOn(texto2)
+                .onClick {
+                    launchImmediately { sceneContainer.changeTo<MenuPrincipal>(time = TimeSpan(500.0), transition = AlphaTransition) }
+                }
+
         fun actualizarTexto() {
             texto1.text = conversacion.opcion1!!.first
             texto2.text = conversacion.opcion2!!.first
             texto3.text = conversacion.opcion3!!.first
         }
 
-        fun ocultarTexto() {
+        fun terminarConversacion() {
             texto1.text = ""
             texto2.text = ""
             texto3.text = ""
+            botonComenzar!!.visible = true
         }
 
         var boton2 =
@@ -71,20 +72,20 @@ class Presentacion() : Scene() {
                     .onClick {
                         conversacion = conversacion.opcion2!!.second
                         cuadroDialogo.text = conversacion.linea
-                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); ocultarTexto()}}
+                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); terminarConversacion()}}
         var boton1 =
                 this.uiButton(width = 100.0, height = 50.0, text = "").centerOn(texto1)
                     .addTo(botones)
                     .onClick {
                         conversacion = conversacion.opcion1!!.second
                         cuadroDialogo.text = conversacion.linea
-                        if (conversacion.opciones) {actualizarTexto()} else {botones.removeChildren(); ocultarTexto()}}
+                        if (conversacion.opciones) {actualizarTexto()} else {botones.removeChildren(); terminarConversacion()}}
         var boton3 =
                 this.uiButton(width = 100.0, height = 50.0, text = "").centerOn(texto3)
                     .addTo(botones)
                     .onClick {
                         conversacion = conversacion.opcion3!!.second
                         cuadroDialogo.text = conversacion.linea
-                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); ocultarTexto()}}
+                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); terminarConversacion()}}
     }
 }
