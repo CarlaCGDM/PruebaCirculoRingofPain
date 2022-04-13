@@ -61,7 +61,7 @@ class Presentacion() : Scene() {
                 .visible(false)
                 .centerOn(texto2)
                 .onClick {
-                    launchImmediately { sceneContainer.changeTo<MenuPrincipal>(time = TimeSpan(500.0), transition = AlphaTransition) }
+                    launchImmediately { sceneContainer.changeTo<Anillo>(time = TimeSpan(500.0), transition = AlphaTransition) }
                 }
 
         fun actualizarTexto() {

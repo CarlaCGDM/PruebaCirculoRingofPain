@@ -10,5 +10,6 @@ object MyModule : Module() {
     override suspend fun AsyncInjector.configure() {
         mapPrototype { MenuPrincipal() }
         mapPrototype { Presentacion() }
+        mapPrototype { Anillo() }
     }
 }

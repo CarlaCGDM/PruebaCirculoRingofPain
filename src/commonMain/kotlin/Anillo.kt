@@ -80,9 +80,5 @@ class Anillo() : Scene() {
         botones.addChild(textoIzquierdo)
         contenedorPrincipal.addChild(anillo)
         contenedorPrincipal.addChild(botones)
-
-        var cuadroDialogo:Container = container { }
-        var fondo = RoundRect(400.0, height = 100.0, 2.0, stroke = Colors.BLACK, strokeThickness = 2.0).center().position(views.virtualWidth/2, views.virtualHeight/5*4)
-        cuadroDialogo.addChild(fondo)
     }
 }
