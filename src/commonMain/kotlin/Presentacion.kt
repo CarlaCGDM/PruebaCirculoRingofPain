@@ -10,6 +10,10 @@ import com.soywiz.korim.text.TextAlignment
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                /*ESCENA DE INTRODUCCIÓN AL JUEGO*/
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class Presentacion() : Scene() {
     override suspend fun Container.sceneInit() {
         val spriteMapPersonaje = resourcesVfs["chicaPlaceholder.png"].readBitmap()
@@ -29,7 +33,7 @@ class Presentacion() : Scene() {
         personaje.playAnimationLooped()
         var conversacion = Conversacion(
             linea = "Hola. Bienvenido a Ring of Dread.",
-            opcion1 = Pair("Gracias",Conversacion("Buena suerte.")),
+            opcion1 = Pair("Gracias.",Conversacion("Buena suerte.")),
             opcion2 = Pair("Ok.",Conversacion("Ok.")),
             opcion3 = Pair("...",Conversacion(
                 linea= "¿No dices nada?",
@@ -89,3 +93,12 @@ class Presentacion() : Scene() {
                         if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); terminarConversacion()}}
     }
 }
+
+/* TODO:
+-Estaría bien lograr que el texto se mostrara en pantalla letra a letra.
+-Quizás sea posible con la ayuda de una corutina.
+-No descarto que ya exista la opción por algún lado dentro del propio Korge.
+-Obviamente necesita un rediseño una vez sea completamente funcional.
+-También necesita música.
+ */
+
