@@ -26,12 +26,12 @@ class Presentacion() : Scene() {
         val animacionPersonaje = SpriteAnimation(
             spriteMap = spriteMapPersonaje,
             spriteHeight = 454,
-            spriteWidth = 416,
+            spriteWidth = 446,
             marginTop = 0,
             marginLeft = 0,
             columns = 16,
             rows = 1,
-            offsetBetweenColumns = 0,
+            offsetBetweenColumns = -30,
             offsetBetweenRows = 0
         )
 
@@ -52,9 +52,9 @@ class Presentacion() : Scene() {
 
         var cuadroDialogo = text("", textSize = 20.0, alignment = TextAlignment.MIDDLE_CENTER).centerXOnStage().alignBottomToTopOf(personaje, 20)
         var botones = container {}.visible(false)
-        var texto2 = text(conversacion.opcion2?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2)
-        var texto1 = text(conversacion.opcion1?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 - 120)
-        var texto3 = text(conversacion.opcion3?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER) .alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 + 120)
+        var texto2 = text(conversacion.opcion2?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 40).positionX(views.virtualWidth/2)
+        var texto1 = text(conversacion.opcion1?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 40).positionX(views.virtualWidth/2 - 120)
+        var texto3 = text(conversacion.opcion3?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER) .alignTopToBottomOf(personaje, 40).positionX(views.virtualWidth/2 + 120)
 
         var botonComenzar =
             uiButton(width = 100.0, height = 50.0, text = "[Entrar]")
@@ -80,6 +80,8 @@ class Presentacion() : Scene() {
         fun textoLetraALetra(texto:String) {
             botones.visible = false
             GlobalScope.launch {
+                cuadroDialogo.text =""
+                delay(TimeSpan(200.0))
                 for (i in 1..texto.length) {
                     cuadroDialogo.text = texto.take(i)
                     when(texto.elementAt(i-1)) {
@@ -120,7 +122,6 @@ class Presentacion() : Scene() {
 }
 
 /* TODO:
--No veo manera de hacer que los botones aparezcan sólo cuando el NPC ha terminado de hablar.
 -Obviamente necesita un rediseño una vez sea completamente funcional.
 -También necesita música.
  */
