@@ -51,7 +51,7 @@ class Presentacion() : Scene() {
 
 
         var cuadroDialogo = text("", textSize = 20.0, alignment = TextAlignment.MIDDLE_CENTER).centerXOnStage().alignBottomToTopOf(personaje, 20)
-        var botones = container {}
+        var botones = container {}.visible(false)
         var texto2 = text(conversacion.opcion2?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2)
         var texto1 = text(conversacion.opcion1?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER).alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 - 120)
         var texto3 = text(conversacion.opcion3?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER) .alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 + 120)
@@ -76,20 +76,19 @@ class Presentacion() : Scene() {
             botonComenzar!!.visible = true
         }
 
-        var botonesVisibles = false
-
         fun textoLetraALetra(texto:String) {
+            botones.visible = false
             GlobalScope.launch {
                 for (i in 1..texto.length) {
                     cuadroDialogo.text = texto.take(i)
                     when(texto.elementAt(i-1)) {
                         ' ' -> delay(TimeSpan(0.0))
                         ',' -> delay(TimeSpan(100.0))
-                        in listOf('?','!','.') -> delay(TimeSpan(200.0))
+                        in listOf('?','!','.') -> delay(TimeSpan(500.0))
                         else -> delay(TimeSpan(50.0))
                     }
                 }
-
+                botones.visible = true
             }
         }
 
@@ -115,13 +114,12 @@ class Presentacion() : Scene() {
                         if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); terminarConversacion()}}
 
         botones.addChildren(listOf(boton1,boton2,boton3))
+        botones.addChildren(listOf(texto1,texto2,texto3))
     }
 }
 
 /* TODO:
--Estaría bien lograr que el texto se mostrara en pantalla letra a letra.
--Quizás sea posible con la ayuda de una corutina.
--No descarto que ya exista la opción por algún lado dentro del propio Korge.
+-No veo manera de hacer que los botones aparezcan sólo cuando el NPC ha terminado de hablar.
 -Obviamente necesita un rediseño una vez sea completamente funcional.
 -También necesita música.
  */
