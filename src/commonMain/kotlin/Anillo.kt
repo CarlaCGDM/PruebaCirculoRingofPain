@@ -1,11 +1,13 @@
 import com.soywiz.kds.rotated
 import com.soywiz.korge.*
 import com.soywiz.korge.input.onClick
-import com.soywiz.korge.scene.Module
+import com.soywiz.korge.input.onOver
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
+import com.soywiz.korim.format.readBitmap
 import com.soywiz.korim.text.TextAlignment
+import com.soywiz.korio.file.std.resourcesVfs
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -19,12 +21,18 @@ import kotlin.math.sin
 
 class Anillo() : Scene() {
     override suspend fun Container.sceneInit() {
+
+        val fondo1 = sprite(resourcesVfs["fondos/cielo.png"].readBitmap()).size(views.virtualWidth,views.virtualHeight)
+        val fondo2 = sprite(resourcesVfs["fondos/ruinas.png"].readBitmap()).size(views.virtualWidth,views.virtualHeight)
+        val fondo3 = sprite(resourcesVfs["fondos/arboles.png"].readBitmap()).size(views.virtualWidth,views.virtualHeight)
+        val fondo4 = sprite(resourcesVfs["fondos/hierba.png"].readBitmap()).size(views.virtualWidth,views.virtualHeight)
+
         fun generarAnillo(cartas:MutableList<Int>):Container {
             //preparar lo necesario
             val total = cartas.size
             val mitad = total/2 - 1
             val radio = views.virtualWidth/4
-            val centro = Pair(views.virtualWidth/2.0,views.virtualHeight/2.0)
+            val centro = Pair(views.virtualWidth/2.0,views.virtualHeight/2.0-80)
             val angulo = 360.0/cartas.size * PI/180
             val rot = PI/2 + angulo/2
             val persp = 3
@@ -36,15 +44,15 @@ class Anillo() : Scene() {
             var y: Double
             if (cartas.size == 1) {
                 anillo.addChildren(listOf(
-                    RoundRect(width = ancho*1.5, height = alto*1.5, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first, centro.second+radio /persp),
+                    RoundRect(width = ancho*1.5, height = alto*1.3, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first, centro.second+radio /persp),
                     Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(centro.first, centro.second+radio /persp)
                 ))
                 return anillo
             }
             //si hay dos o más, colocamos las dos primeras en la posición central con una pequeña separación
             //el bucle se encargará del resto
-            val primeraCarta = RoundRect(width = ancho*1.5, height = alto*1.5, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first-sep, centro.second+radio/persp)
-            val segundaCarta =	RoundRect(width = ancho*1.5, height = alto*1.5, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first+sep, centro.second+radio/persp)
+            val primeraCarta = RoundRect(width = ancho*1.3, height = alto*1.3, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first-sep, centro.second+radio/persp).onOver {/*cambiar tamaño*/}
+            val segundaCarta =	RoundRect(width = ancho*1.3, height = alto*1.3, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first+sep, centro.second+radio/persp)
             val primerTexto = Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(centro.first-sep, centro.second+radio/persp)
             val segundoTexto = Text(text = cartas.removeFirst().toString(), alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(centro.first+sep, centro.second+radio/persp)
             //averiguar la posición de cada carta
@@ -84,6 +92,6 @@ class Anillo() : Scene() {
 }
 
 /* TODO:
--Falta mover el anillo hacia arriba para que quepan los demás elementos de la interfaz.
+-Falta poner bien los botones y estructurar la escena mejor.
 -Falta crear el resto de los elementos de la interfaz.
  */
