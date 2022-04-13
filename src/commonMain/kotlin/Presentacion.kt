@@ -57,7 +57,8 @@ class Presentacion() : Scene() {
         var texto3 = text(conversacion.opcion3?.first ?: "" , alignment = TextAlignment.MIDDLE_CENTER) .alignTopToBottomOf(personaje, 30).positionX(views.virtualWidth/2 + 120)
 
         var botonComenzar =
-            uiButton(width = 100.0, height = 50.0, text = "[Entrar]").visible(false)
+            uiButton(width = 100.0, height = 50.0, text = "[Entrar]")
+                .visible(false)
                 .centerOn(texto2)
                 .onClick {
                     launchImmediately { sceneContainer.changeTo<MenuPrincipal>(time = TimeSpan(500.0), transition = AlphaTransition) }
@@ -99,19 +100,19 @@ class Presentacion() : Scene() {
                     .onClick {
                         conversacion = conversacion.opcion2!!.second
                         textoLetraALetra(conversacion.linea)
-                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); terminarConversacion()}}
+                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); botones.addChild(botonComenzar!!); terminarConversacion()}}
         var boton1 =
                 this.uiButton(width = 100.0, height = 50.0, text = "").centerOn(texto1)
                     .onClick {
                         conversacion = conversacion.opcion1!!.second
                         textoLetraALetra(conversacion.linea)
-                        if (conversacion.opciones) {actualizarTexto()} else {botones.removeChildren(); terminarConversacion()}}
+                        if (conversacion.opciones) {actualizarTexto()} else {botones.removeChildren(); botones.addChild(botonComenzar!!);terminarConversacion()}}
         var boton3 =
                 this.uiButton(width = 100.0, height = 50.0, text = "").centerOn(texto3)
                     .onClick {
                         conversacion = conversacion.opcion3!!.second
                         textoLetraALetra(conversacion.linea)
-                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); terminarConversacion()}}
+                        if (conversacion.opciones) {actualizarTexto()}  else {botones.removeChildren(); botones.addChild(botonComenzar!!); terminarConversacion()}}
 
         botones.addChildren(listOf(boton1,boton2,boton3))
         botones.addChildren(listOf(texto1,texto2,texto3))
