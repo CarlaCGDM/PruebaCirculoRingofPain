@@ -55,5 +55,4 @@ class MenuPrincipal : Scene() {
 /* TODO:
 -Falta incluir música de fondo.
 -Falta añadir más botones, los correspondientes a todas las funciones del juego.
--Obviamente necesita un resideño una vez todos los elementos sean funcionales.
  */

@@ -3,6 +3,8 @@ import com.soywiz.korge.*
 import com.soywiz.korge.input.onClick
 import com.soywiz.korge.input.onOver
 import com.soywiz.korge.scene.Scene
+import com.soywiz.korge.ui.uiButton
+import com.soywiz.korge.ui.uiRadioButton
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.format.readBitmap
@@ -31,7 +33,7 @@ class Anillo() : Scene() {
             //preparar lo necesario
             val total = cartas.size
             val mitad = total/2 - 1
-            val radio = views.virtualWidth/4
+            val radio = views.virtualWidth/4.0
             val centro = Pair(views.virtualWidth/2.0,views.virtualHeight/2.0-80)
             val angulo = 360.0/cartas.size * PI/180
             val rot = PI/2 + angulo/2
@@ -42,6 +44,7 @@ class Anillo() : Scene() {
             var anillo = container { }
             var x: Double
             var y: Double
+
             if (cartas.size == 1) {
                 anillo.addChildren(listOf(
                     RoundRect(width = ancho*1.5, height = alto*1.3, rx = 20.0, fill=Colors["#ff587f"], stroke=Colors["#a5253a"], strokeThickness = 2.0).center().position(centro.first, centro.second+radio /persp),
@@ -71,6 +74,8 @@ class Anillo() : Scene() {
                 }
             }
             anillo.addChildren(listOf(primeraCarta,segundaCarta,primerTexto,segundoTexto))
+            anillo.addChildAt(circle(radius=radio, fill=Colors.BLACK).alpha(0.25).center().position(centro.first,centro.second+180).size(radio*2, radio*2/persp),0)
+
             //devolver el contenedor con los elementos
             return anillo
         }
@@ -78,14 +83,11 @@ class Anillo() : Scene() {
         var contenedorPrincipal: Container = container { }
         var anillo: Container =  generarAnillo(ArrayList(cartas))
         var botones: Container = Container()
-        var botonDerecho = Circle(radius=10.0, fill=Colors.AQUAMARINE, stroke=Colors.BLACK, strokeThickness = 2.0).center().position(views.virtualWidth/2 + 60, views.virtualHeight/2 + views.virtualWidth /3 / 3 ).onClick{cartas = cartas.rotated(-1).toMutableList(); anillo=generarAnillo(ArrayList(cartas))}
-        var textoDerecho = Text(text = ">", alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(views.virtualWidth/2 + 60, views.virtualHeight/2 + views.virtualWidth /3 / 3)
-        var botonIzquierdo = Circle(radius=10.0, fill=Colors.AQUAMARINE, stroke=Colors.BLACK, strokeThickness = 2.0).center().position(views.virtualWidth/2 - 60, views.virtualHeight/2 + views.virtualWidth /3 / 3).onClick{cartas = cartas.rotated(1).toMutableList(); anillo=generarAnillo(ArrayList(cartas))}
-        var textoIzquierdo = Text(text = "<", alignment = TextAlignment.MIDDLE_CENTER, color = Colors.BLACK).position(views.virtualWidth/2 - 60, views.virtualHeight/2 + views.virtualWidth /3 / 3)
+
+        var botonDerecho = uiButton(width=30.0, height=80.0,text=">").position(views.virtualWidth/2.0 + 180, views.virtualHeight/2.0).onClick{cartas = cartas.rotated(-1).toMutableList(); anillo.removeChildren(); anillo=generarAnillo(ArrayList(cartas))}
+        var botonIzquierdo = uiButton(width=30.0, height=80.0,text="<").position(views.virtualWidth/2.0 - 210, views.virtualHeight/2.0).onClick{cartas = cartas.rotated(1).toMutableList(); anillo.removeChildren(); anillo=generarAnillo(ArrayList(cartas))}
+
         botones.addChild(botonDerecho!!)
-        botones.addChild(textoDerecho)
-        botones.addChild(botonIzquierdo!!)
-        botones.addChild(textoIzquierdo)
         contenedorPrincipal.addChild(anillo)
         contenedorPrincipal.addChild(botones)
     }
